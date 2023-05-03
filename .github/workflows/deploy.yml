@@ -1,0 +1,28 @@
+
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.server }}
+          username: ${{ secrets.username }}
+          password: ${{ secrets.password }}
+          script: |
+            [[ -s $HOME/.nvm/nvm.sh ]] && . $HOME/.nvm/nvm.sh
+            cd ~/library-strapi
+            git pull
+            yarn install --frozen-lockfile
+            git stash save --keep-index --include-untracked
+            git stash drop
+            NODE_ENV=production yarn build
+            pm2 restart library-strapi

@@ -1,0 +1,41 @@
+{
+  "kind": "collectionType",
+  "collectionName": "deliveries",
+  "info": {
+    "singularName": "delivery",
+    "pluralName": "deliveries",
+    "displayName": "delivery",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "handed": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "dateHandedTo": {
+      "type": "datetime",
+      "required": true
+    },
+    "dateHandedFrom": {
+      "type": "datetime",
+      "required": true
+    },
+    "book": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::book.book",
+      "inversedBy": "delivery"
+    },
+    "recipient": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "delivery"
+    }
+  }
+}

@@ -1,0 +1,90 @@
+{
+    "kind": "collectionType",
+    "collectionName": "books",
+    "info": {
+        "singularName": "book",
+        "pluralName": "books",
+        "displayName": "book",
+        "description": ""
+    },
+    "options": {
+        "draftAndPublish": true
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "title": {
+            "type": "string",
+            "required": true,
+            "unique": false
+        },
+        "issueYear": {
+            "type": "biginteger"
+        },
+        "images": {
+            "type": "media",
+            "multiple": true,
+            "required": false,
+            "allowedTypes": [
+                "images"
+            ]
+        },
+        "categories": {
+            "type": "relation",
+            "relation": "manyToMany",
+            "target": "api::category.category",
+            "inversedBy": "books"
+        },
+        "description": {
+            "type": "text",
+            "unique": false
+        },
+        "publish": {
+            "type": "string"
+        },
+        "pages": {
+            "type": "biginteger"
+        },
+        "cover": {
+            "type": "string"
+        },
+        "format": {
+            "type": "string"
+        },
+        "ISBN": {
+            "type": "string"
+        },
+        "producer": {
+            "type": "text"
+        },
+        "weight": {
+            "type": "biginteger"
+        },
+        "authors": {
+            "type": "json"
+        },
+        "comments": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::comment.comment",
+            "mappedBy": "book"
+        },
+        "booking": {
+            "type": "relation",
+            "relation": "oneToOne",
+            "target": "api::booking.booking",
+            "mappedBy": "book"
+        },
+        "delivery": {
+            "type": "relation",
+            "relation": "oneToOne",
+            "target": "api::delivery.delivery",
+            "mappedBy": "book"
+        },
+        "histories": {
+            "type": "relation",
+            "relation": "manyToMany",
+            "target": "api::history.history",
+            "inversedBy": "books"
+        }
+    }
+}

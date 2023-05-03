@@ -1,0 +1,42 @@
+{
+  "name": "strapi-library-cleverland",
+  "private": true,
+  "version": "0.1.0",
+  "description": "A Strapi application",
+  "scripts": {
+    "develop": "strapi develop",
+    "start": "strapi start",
+    "build": "strapi build",
+    "strapi": "strapi",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.1.2",
+    "@commitlint/config-conventional": "^17.1.0",
+    "husky": "^8.0.1",
+    "lint-staged": "^12.4.2"
+  },
+  "dependencies": {
+    "@strapi/plugin-documentation": "^4.4.7",
+    "@strapi/plugin-i18n": "^4.4.7",
+    "@strapi/plugin-users-permissions": "^4.4.7",
+    "@strapi/provider-email-nodemailer": "^4.4.7",
+    "@strapi/strapi": "^4.4.7",
+    "better-sqlite3": "7.4.6",
+    "strapi-plugin-populate-deep": "^1.0.1"
+  },
+  "author": {
+    "name": "A Strapi developer"
+  },
+  "strapi": {
+    "uuid": "20640f8c-63df-4413-80f6-f87337ebae15"
+  },
+  "engines": {
+    "node": ">=14.19.1 <=18.x.x",
+    "npm": ">=6.0.0"
+  },
+  "license": "MIT",
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx}": []
+  }
+}
