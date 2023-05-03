@@ -3,7 +3,6 @@
  */
 import { Strapi } from "@strapi/strapi";
 import { factories } from "@strapi/strapi";
-import { sanitize } from "@strapi/utils";
 
 import {
   isDateBefore,
@@ -12,8 +11,6 @@ import {
   isDateHoliday,
   isDateEqual,
 } from "../../../utils/date-utils";
-
-const { contentAPI } = sanitize;
 
 export default factories.createCoreController(
   "api::booking.booking",

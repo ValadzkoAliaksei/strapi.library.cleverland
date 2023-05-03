@@ -1,9 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const strapi_1 = require("@strapi/strapi");
-const utils_1 = require("@strapi/utils");
 const date_utils_1 = require("../../../utils/date-utils");
-const { contentAPI } = utils_1.sanitize;
 exports.default = strapi_1.factories.createCoreController("api::booking.booking", ({ strapi }) => ({
     async create(ctx) {
         var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r;

@@ -7,6 +7,9 @@ const cron_tasks_1 = __importDefault(require("./cron-tasks"));
 exports.default = ({ env }) => ({
     host: env('HOST', '0.0.0.0'),
     port: env.int('PORT', 1337),
+    webhooks: {
+        populateRelations: false,
+    },
     app: {
         keys: env.array('APP_KEYS'),
     },
