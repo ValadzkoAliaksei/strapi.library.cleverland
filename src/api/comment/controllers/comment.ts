@@ -136,7 +136,6 @@ export default factories.createCoreController(
           }
         );
       }
-      console.log(comment);
 
       if (!ctx.request.body) {
         return ctx.badRequest(

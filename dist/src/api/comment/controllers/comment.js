@@ -80,7 +80,6 @@ exports.default = strapi_1.factories.createCoreController("api::comment.comment"
                 id: ctx.params.id,
             });
         }
-        console.log(comment);
         if (!ctx.request.body) {
             return ctx.badRequest("Ошибка изменения комментария. Не передано тело запроса", {
                 body: ctx.request.body,
