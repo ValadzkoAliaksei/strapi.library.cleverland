@@ -96,7 +96,7 @@ exports.default = strapi_1.factories.createCoreController("api::book.book", ({ s
                             commentUserId: user.data.id,
                             firstName: user.data.attributes.firstName,
                             lastName: user.data.attributes.lastName,
-                            avatarUrl: ((_a = user.data.attributes.avatar.data) === null || _a === void 0 ? void 0 : _a.url) || null,
+                            avatarUrl: ((_a = user.data.attributes.avatar.data) === null || _a === void 0 ? void 0 : _a.attributes.url) || null,
                         },
                     });
                 })

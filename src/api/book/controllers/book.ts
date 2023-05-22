@@ -150,7 +150,8 @@ export default factories.createCoreController(
                   commentUserId: user.data.id,
                   firstName: user.data.attributes.firstName,
                   lastName: user.data.attributes.lastName,
-                  avatarUrl: user.data.attributes.avatar.data?.url || null,
+                  avatarUrl:
+                    user.data.attributes.avatar.data?.attributes.url || null,
                 },
               })
             )
