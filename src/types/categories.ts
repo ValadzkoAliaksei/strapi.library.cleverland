@@ -1,3 +1,5 @@
+import { BooksDataResponseType } from "./book";
+
 export type CategoryDataType = {
   data: {
     id: number;
@@ -7,6 +9,7 @@ export type CategoryDataType = {
       createdAt: Date;
       updatedAt: Date;
       publishedAt: Date;
+      books: BooksDataResponseType;
     };
   }[];
 };
