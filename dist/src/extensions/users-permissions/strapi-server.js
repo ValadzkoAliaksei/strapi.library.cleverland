@@ -498,12 +498,12 @@ exports.default = (plugin) => {
     // plugin.policies[newPolicy] = (ctx) => {};
     plugin.routes["content-api"].routes.push({
         method: "GET",
-        path: "/api/users/{id}/block",
+        path: "/:id/block",
         handler: "user.block",
     });
     plugin.routes["content-api"].routes.push({
         method: "GET",
-        path: "/api/users/{id}/unblock",
+        path: "/:id/unblock",
         handler: "user.unblock",
     });
     return plugin;

@@ -648,13 +648,13 @@ export default (plugin) => {
 
   plugin.routes["content-api"].routes.push({
     method: "GET",
-    path: "/api/users/{id}/block",
+    path: "/:id/block",
     handler: "user.block",
   });
 
   plugin.routes["content-api"].routes.push({
     method: "GET",
-    path: "/api/users/{id}/unblock",
+    path: "/:id/unblock",
     handler: "user.unblock",
   });
 
