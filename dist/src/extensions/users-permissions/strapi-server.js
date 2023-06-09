@@ -297,131 +297,214 @@ exports.default = (plugin) => {
         }) || [];
         return users;
     };
-    // plugin.controllers.auth.local = async (ctx) => {
-    //   console.log("plugin.controllers.auth.local");
-    //   ctx.query = { ...ctx.query, populate: "deep,3" };
-    //   const response = await strapi.entityService.findOne(
-    //     "plugin::users-permissions.auth",
-    //     ctx.state.user.id,
-    //     {
-    //       populate: "deep,3",
-    //     }
-    //   );
-    //   const {
-    //     id,
-    //     username,
-    //     email,
-    //     confirmed,
-    //     blocked,
-    //     createdAt,
-    //     updatedAt,
-    //     firstName,
-    //     lastName,
-    //     phone,
-    //     role,
-    //     comments,
-    //     avatar,
-    //     booking,
-    //     delivery,
-    //     history,
-    //   } = response;
-    //   const user = {
-    //     id,
-    //     username,
-    //     email,
-    //     confirmed,
-    //     blocked,
-    //     createdAt,
-    //     updatedAt,
-    //     firstName,
-    //     lastName,
-    //     phone,
-    //     role: {
-    //       id: role.id,
-    //       name: role.name,
-    //       description: role.description,
-    //       type: role.type,
-    //     },
-    //     comments:
-    //       comments?.map(({ id, rating, text, book }) => ({
-    //         id,
-    //         rating,
-    //         text,
-    //         bookId: book.id,
-    //       })) || null,
-    //     avatar: avatar.url,
-    //     booking: {
-    //       id: booking?.id || null,
-    //       order: booking?.order || null,
-    //       dateOrder: booking?.dateOrder || null,
-    //       book: booking?.book
-    //         ? {
-    //             id: booking.book.id,
-    //             title: booking.book.title,
-    //             rating: booking.book.rating,
-    //             issueYear: booking.book.issueYear,
-    //             authors: booking.book.authors,
-    //             image:
-    //               booking.book.images?.data?.map(({ attributes }) => ({
-    //                 url: attributes.url,
-    //               }))[0] || null,
-    //           }
-    //         : null,
-    //     },
-    //     delivery: {
-    //       id: delivery?.id || null,
-    //       handed: delivery?.handed || null,
-    //       dateHandedFrom: delivery?.dateHandedFrom || null,
-    //       dateHandedTo: delivery?.dateHandedTo || null,
-    //       book: delivery?.book
-    //         ? {
-    //             id: delivery.book.id,
-    //             title: delivery.book.title,
-    //             rating: delivery.book.rating,
-    //             issueYear: delivery.book.issueYear,
-    //             authors: delivery.book.authors,
-    //             image:
-    //               delivery.book.images?.data?.map(({ attributes }) => ({
-    //                 url: attributes.url,
-    //               }))[0] || null,
-    //           }
-    //         : null,
-    //     },
-    //     history: {
-    //       id: history?.id || null,
-    //       books: history?.books?.length
-    //         ? history.books.map(
-    //             ({ id, title, rating, issueYear, authors, images }) => ({
-    //               id,
-    //               title,
-    //               rating,
-    //               issueYear,
-    //               authors,
-    //               image:
-    //                 images?.data?.map(({ attributes }) => ({
-    //                   url: attributes.url,
-    //                 }))[0] || null,
-    //             })
-    //           )
-    //         : null,
-    //     },
-    //   };
-    //   return user;
-    // };
+    plugin.controllers.user.block = async (ctx) => {
+        var _a, _b, _c, _d, _e;
+        ctx.query = { ...ctx.query, populate: "deep,3" };
+        const client = await strapi.entityService.findOne("plugin::users-permissions.user", ctx.params.id, {
+            ...ctx.query,
+            populate: "deep,2",
+        });
+        if (!client) {
+            return ctx.badRequest("Ошибка блокирования. Пользователь не найден по данному id", {
+                user: ctx.params.id,
+            });
+        }
+        const response = await strapi.entityService.update("plugin::users-permissions.user", ctx.params.id, {
+            data: {
+                blocked: true,
+            },
+            populate: "deep,3",
+        });
+        const { id, username, email, confirmed, blocked, createdAt, updatedAt, firstName, lastName, phone, role, comments, avatar, booking, delivery, history, } = response;
+        const user = {
+            id,
+            username,
+            email,
+            confirmed,
+            blocked,
+            createdAt,
+            updatedAt,
+            firstName,
+            lastName,
+            phone,
+            role: {
+                id: role.id,
+                name: role.name,
+                description: role.description,
+                type: role.type,
+            },
+            comments: (comments === null || comments === void 0 ? void 0 : comments.map(({ id, rating, text, book }) => ({
+                id,
+                rating,
+                text,
+                bookId: book.id,
+            }))) || null,
+            avatar: (avatar === null || avatar === void 0 ? void 0 : avatar.url) || null,
+            booking: {
+                id: (booking === null || booking === void 0 ? void 0 : booking.id) || null,
+                order: (booking === null || booking === void 0 ? void 0 : booking.order) || null,
+                dateOrder: (booking === null || booking === void 0 ? void 0 : booking.dateOrder) || null,
+                book: (booking === null || booking === void 0 ? void 0 : booking.book)
+                    ? {
+                        id: booking.book.id,
+                        title: booking.book.title,
+                        rating: (0, get_raiting_1.getRatingUser)(booking.book.comments),
+                        issueYear: booking.book.issueYear,
+                        authors: booking.book.authors,
+                        image: ((_b = (_a = booking.book.images) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.map(({ attributes }) => ({
+                            url: attributes.url,
+                        }))[0]) || null,
+                    }
+                    : null,
+            },
+            delivery: {
+                id: (delivery === null || delivery === void 0 ? void 0 : delivery.id) || null,
+                handed: (delivery === null || delivery === void 0 ? void 0 : delivery.handed) || null,
+                dateHandedFrom: (delivery === null || delivery === void 0 ? void 0 : delivery.dateHandedFrom) || null,
+                dateHandedTo: (delivery === null || delivery === void 0 ? void 0 : delivery.dateHandedTo) || null,
+                book: (delivery === null || delivery === void 0 ? void 0 : delivery.book)
+                    ? {
+                        id: delivery.book.id,
+                        title: delivery.book.title,
+                        rating: (0, get_raiting_1.getRatingUser)(delivery.book.comments),
+                        issueYear: delivery.book.issueYear,
+                        authors: delivery.book.authors,
+                        image: ((_d = (_c = delivery.book.images) === null || _c === void 0 ? void 0 : _c.data) === null || _d === void 0 ? void 0 : _d.map(({ attributes }) => ({
+                            url: attributes.url,
+                        }))[0]) || null,
+                    }
+                    : null,
+            },
+            history: {
+                id: (history === null || history === void 0 ? void 0 : history.id) || null,
+                books: ((_e = history === null || history === void 0 ? void 0 : history.books) === null || _e === void 0 ? void 0 : _e.length)
+                    ? history.books.map(({ id, title, comments, issueYear, authors, images }) => {
+                        var _a;
+                        return ({
+                            id,
+                            title,
+                            rating: (0, get_raiting_1.getRatingUser)(comments),
+                            issueYear,
+                            authors,
+                            image: ((_a = images === null || images === void 0 ? void 0 : images.data) === null || _a === void 0 ? void 0 : _a.map(({ attributes }) => ({
+                                url: attributes.url,
+                            }))[0]) || null,
+                        });
+                    })
+                    : null,
+            },
+        };
+        return user;
+    };
+    plugin.controllers.user.unblock = async (ctx) => {
+        var _a, _b, _c, _d, _e;
+        ctx.query = { ...ctx.query, populate: "deep,3" };
+        const client = await strapi.entityService.findOne("plugin::users-permissions.user", ctx.params.id, {
+            ...ctx.query,
+            populate: "deep,2",
+        });
+        if (!client) {
+            return ctx.badRequest("Ошибка блокирования. Пользователь не найден по данному id", {
+                user: ctx.params.id,
+            });
+        }
+        const response = await strapi.entityService.update("plugin::users-permissions.user", ctx.params.id, {
+            data: {
+                blocked: false,
+            },
+            populate: "deep,3",
+        });
+        const { id, username, email, confirmed, blocked, createdAt, updatedAt, firstName, lastName, phone, role, comments, avatar, booking, delivery, history, } = response;
+        const user = {
+            id,
+            username,
+            email,
+            confirmed,
+            blocked,
+            createdAt,
+            updatedAt,
+            firstName,
+            lastName,
+            phone,
+            role: {
+                id: role.id,
+                name: role.name,
+                description: role.description,
+                type: role.type,
+            },
+            comments: (comments === null || comments === void 0 ? void 0 : comments.map(({ id, rating, text, book }) => ({
+                id,
+                rating,
+                text,
+                bookId: book.id,
+            }))) || null,
+            avatar: (avatar === null || avatar === void 0 ? void 0 : avatar.url) || null,
+            booking: {
+                id: (booking === null || booking === void 0 ? void 0 : booking.id) || null,
+                order: (booking === null || booking === void 0 ? void 0 : booking.order) || null,
+                dateOrder: (booking === null || booking === void 0 ? void 0 : booking.dateOrder) || null,
+                book: (booking === null || booking === void 0 ? void 0 : booking.book)
+                    ? {
+                        id: booking.book.id,
+                        title: booking.book.title,
+                        rating: (0, get_raiting_1.getRatingUser)(booking.book.comments),
+                        issueYear: booking.book.issueYear,
+                        authors: booking.book.authors,
+                        image: ((_b = (_a = booking.book.images) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.map(({ attributes }) => ({
+                            url: attributes.url,
+                        }))[0]) || null,
+                    }
+                    : null,
+            },
+            delivery: {
+                id: (delivery === null || delivery === void 0 ? void 0 : delivery.id) || null,
+                handed: (delivery === null || delivery === void 0 ? void 0 : delivery.handed) || null,
+                dateHandedFrom: (delivery === null || delivery === void 0 ? void 0 : delivery.dateHandedFrom) || null,
+                dateHandedTo: (delivery === null || delivery === void 0 ? void 0 : delivery.dateHandedTo) || null,
+                book: (delivery === null || delivery === void 0 ? void 0 : delivery.book)
+                    ? {
+                        id: delivery.book.id,
+                        title: delivery.book.title,
+                        rating: (0, get_raiting_1.getRatingUser)(delivery.book.comments),
+                        issueYear: delivery.book.issueYear,
+                        authors: delivery.book.authors,
+                        image: ((_d = (_c = delivery.book.images) === null || _c === void 0 ? void 0 : _c.data) === null || _d === void 0 ? void 0 : _d.map(({ attributes }) => ({
+                            url: attributes.url,
+                        }))[0]) || null,
+                    }
+                    : null,
+            },
+            history: {
+                id: (history === null || history === void 0 ? void 0 : history.id) || null,
+                books: ((_e = history === null || history === void 0 ? void 0 : history.books) === null || _e === void 0 ? void 0 : _e.length)
+                    ? history.books.map(({ id, title, comments, issueYear, authors, images }) => {
+                        var _a;
+                        return ({
+                            id,
+                            title,
+                            rating: (0, get_raiting_1.getRatingUser)(comments),
+                            issueYear,
+                            authors,
+                            image: ((_a = images === null || images === void 0 ? void 0 : images.data) === null || _a === void 0 ? void 0 : _a.map(({ attributes }) => ({
+                                url: attributes.url,
+                            }))[0]) || null,
+                        });
+                    })
+                    : null,
+            },
+        };
+        return user;
+    };
     // plugin.policies[newPolicy] = (ctx) => {};
-    // plugin.routes["content-api"].routes.push({
-    //   method: "GET",
-    //   path: "/route-path",
-    //   handler: "controller.action",
-    // });
-    // plugin.routes["content-api"].routes.push({
-    //   method: "POST",
-    //   path: "/api/auth/local",
-    //   handler: "auth.local",
-    //   config: {
-    //     policies: [],
-    //     prefix: "",
-    //   },
-    // });
+    plugin.routes["content-api"].routes.push({
+        method: "GET",
+        path: "/api/users/{id}/block",
+        handler: "user.block",
+    });
+    plugin.routes["content-api"].routes.push({
+        method: "GET",
+        path: "/api/users/{id}/unblock",
+        handler: "user.unblock",
+    });
     return plugin;
 };
